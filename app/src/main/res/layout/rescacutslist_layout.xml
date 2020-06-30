@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="제품"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/cntText"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:text="수량" />
+
+    <TextView
+        android:id="@+id/priceText"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:text="단가" />
+
+    <TextView
+        android:id="@+id/sumText"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:text="총 금액" />
+
+    <Button
+        android:id="@+id/delButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="삭제" />
+</LinearLayout>
