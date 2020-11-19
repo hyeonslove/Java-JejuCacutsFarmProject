@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver bluetoothRecvier;
 
     /////////////////////////////////////////////////
+    //                 Status 구현                 //
+    /////////////////////////////////////////////////
+    private boolean connected = false;
+    /////////////////////////////////////////////////
     //              Func Button 구현               //
     /////////////////////////////////////////////////
 //    private Button addButton;
@@ -233,10 +237,13 @@ public class MainActivity extends AppCompatActivity {
                     String text = intent.getStringExtra("status_message");
                     if(text.equals("connected")) {
                         setTitle("제주농원 for android 연결 완료");
+                        connected = true;
                     }else if(text.equals("disconnected")){
                         setTitle("제주농원 for android 연결 끊김");
+                        connected = false;
                     }else if(text.equals("failconnected")){
                         setTitle("제주농원 for android 연결 실패");
+                        connected = false;
                     }
                 }
             };
@@ -300,11 +307,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void printButton_onClick(View view) {
         try {
-            String send_msg = "";
-            for(BasketForm item : basketListViewAdapter.GetInstance()){
-                send_msg += (item.getTitle() + " " + item.getCount() + " " + item.getPrice() + "\\");
+            if (connected ) {
+                if(basketListViewAdapter.GetInstance().size() == 0){
+                    toastSend("인쇄 할 제품이 없습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
+                    return;
+                }
+
+                String send_msg = "";
+                for (BasketForm item : basketListViewAdapter.GetInstance()) {
+                    send_msg += (item.getTitle() + " " + item.getCount() + " " + item.getPrice() + "\\");
+                }
+                BluetoothService.sendData(send_msg + "\r\n");
+                toastSend("인쇄 요청에 성공하였습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
+            }else{
+                connectButton_onClick(null);
+                toastSend("블루투스 연결이 안 되어있습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
             }
-            BluetoothService.sendData(send_msg +"\r\n");
         }catch (Exception e){
             e.printStackTrace();
         }
