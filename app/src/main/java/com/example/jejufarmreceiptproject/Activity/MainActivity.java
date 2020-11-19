@@ -226,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
         Init_TextView();
     }
     //endregion
+
     @Override
     protected void onResume(){
         super.onResume();
@@ -268,11 +269,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+
     protected void onDestroy(){
         super.onDestroy();
 
         if(bluetoothRecvier != null){
             unregisterReceiver(bluetoothRecvier);
+        }
+    }
+    // 마지막으로 뒤로 가기 버튼을 눌렀던 시간 저장
+    private long backKeyPressedTime = 0;
+    // 첫 번째 뒤로 가기 버튼을 누를 때 표시
+    private Toast toast;
+
+    @Override
+    public void onBackPressed(){
+        if (System.currentTimeMillis() > backKeyPressedTime + 2500) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast = Toast.makeText(this, "뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+        // 마지막으로 뒤로 가기 버튼을 눌렀던 시간에 2.5초를 더해 현재 시간과 비교 후
+        // 마지막으로 뒤로 가기 버튼을 눌렀던 시간이 2.5초가 지나지 않았으면 종료
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2500) {
+            stopService(new Intent(MainActivity.this, BluetoothService.class));
+            finish();
+            toast.cancel();
+            toast = Toast.makeText(this,"이용해 주셔서 감사합니다.",Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 
@@ -307,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void printButton_onClick(View view) {
         try {
-            if (connected ) {
+            if (connected) {
                 if(basketListViewAdapter.GetInstance().size() == 0){
                     toastSend("인쇄 할 제품이 없습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
                     return;
