@@ -63,7 +63,7 @@ public class BluetoothService extends Service {
                                     final String text = new String(encodedBytes, StandardCharsets.US_ASCII);
                                     readBufferPosition = 0;
                                     if (text.compareTo("1053-4030") == 0) { // 페어링 인식번호
-                                        mainActivityIntent.putExtra("toast_message", "connected");
+                                        mainActivityIntent.putExtra("status_message", "connected");
                                         sendBroadcast(mainActivityIntent);
                                     }
                                 } else {
@@ -90,7 +90,7 @@ public class BluetoothService extends Service {
                     Thread.sleep(1000);
                 }
             }catch (IOException e){
-                mainActivityIntent.putExtra("toast_message", "disconnected");
+                mainActivityIntent.putExtra("status_message", "failconnected");
                 sendBroadcast(mainActivityIntent);
                 return;
             } catch (Exception e) {
@@ -132,6 +132,8 @@ public class BluetoothService extends Service {
             new PingThread().start();
 
         } catch (IOException e) {
+            mainActivityIntent.putExtra("status_message", "failconnected");
+            sendBroadcast(mainActivityIntent);
             e.printStackTrace();
         }
     }
@@ -162,9 +164,8 @@ public class BluetoothService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Init_Bluetooth();
-
         mainActivityIntent = new Intent("bluetoothService");
+        Init_Bluetooth();
     }
 
     @Override

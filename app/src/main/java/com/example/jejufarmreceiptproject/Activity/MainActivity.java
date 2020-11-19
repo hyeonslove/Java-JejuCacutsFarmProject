@@ -230,11 +230,13 @@ public class MainActivity extends AppCompatActivity {
             bluetoothRecvier = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    String text = intent.getStringExtra("toast_message");
+                    String text = intent.getStringExtra("status_message");
                     if(text.equals("connected")) {
                         setTitle("제주농원 for android 연결 완료");
                     }else if(text.equals("disconnected")){
                         setTitle("제주농원 for android 연결 끊김");
+                    }else if(text.equals("failconnected")){
+                        setTitle("제주농원 for android 연결 실패");
                     }
                 }
             };
@@ -251,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setPermission();
         mContext = this;
-        setTitle("테스트용");
+        setTitle("제주농원 for android 연결대기");
         InitAll();
 
         startService(new Intent(MainActivity.this, BluetoothService.class));
@@ -309,8 +311,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void connectButton_onClick(View view) {
-        stopService(new Intent(MainActivity.this, BluetoothService.class));
-        startService(new Intent(MainActivity.this, BluetoothService.class));
+        try {
+            stopService(new Intent(MainActivity.this, BluetoothService.class));
+            setTitle("다시 연결 하는중");
+            Thread.sleep(300);
+            startService(new Intent(MainActivity.this, BluetoothService.class));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void cactusEditButton_onClick(View view) {
