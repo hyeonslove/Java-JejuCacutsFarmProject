@@ -129,7 +129,6 @@ public class PrintActivity extends AppCompatActivity {
             sendIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(),captureView));
             sendIntent.setType("image/jpg");
             startActivity(sendIntent);
-
             finish();
         }catch (FileNotFoundException e){
             e.printStackTrace();
