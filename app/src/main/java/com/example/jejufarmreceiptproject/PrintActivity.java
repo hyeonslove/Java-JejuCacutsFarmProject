@@ -1,10 +1,16 @@
 package com.example.jejufarmreceiptproject;
 
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
@@ -18,6 +24,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
@@ -81,7 +89,7 @@ public class PrintActivity extends AppCompatActivity {
         try {
             String send_msg = "";
             for (BasketForm item : basketListViewAdapter.GetInstance()) {
-                send_msg += (item.getTitle() + " " + item.getCount() + " " + item.getPrice() + "\\");
+                send_msg = (item.getTitle() + " " + item.getCount() + " " + item.getPrice() + "\\");
             }
             BluetoothService.sendData(send_msg + "\r\n");
             toastSend("인쇄 요청에 성공하였습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
@@ -96,13 +104,33 @@ public class PrintActivity extends AppCompatActivity {
         finish();
     }
 
+    private Uri getImageUri(Context context, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void captureButton_onClick(View view) {
         container.buildDrawingCache();
         Bitmap captureView = container.getDrawingCache();
         FileOutputStream fos;
         try{
-            fos = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/capture.jpeg");
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yy년MM월dd일 h시mm분ss초");
+            String nowString = now.format(dateTimeFormatter);   // 결과 : 2016년 4월 2일 오전 1시 4분
+
+            fos = new FileOutputStream("mnt/sdcard/cactus/" + nowString + ".JPG");
             captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            sendIntent.putExtra("sms_body", "제주농원 217-05252-005911\n" + nowString + " 발송");
+            sendIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(),captureView));
+            sendIntent.setType("image/jpg");
+            startActivity(sendIntent);
+
+            finish();
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }

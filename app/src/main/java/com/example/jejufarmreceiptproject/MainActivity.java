@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
             if (connected) {
                 intent.putExtra("bluetooth_connected", true);
             } else {
-                connectButton_onClick(null);
+//                connectButton_onClick(null);
                 toastSend("블루투스 연결이 안 되어있습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
                 intent.putExtra("bluetooth_connected", false);
             }

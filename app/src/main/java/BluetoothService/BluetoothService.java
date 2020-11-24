@@ -132,7 +132,7 @@ public class BluetoothService extends Service {
             new RecvThread().start();
             new PingThread().start();
 
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             mainActivityIntent.putExtra("status_message", "failconnected");
             sendBroadcast(mainActivityIntent);
             e.printStackTrace();

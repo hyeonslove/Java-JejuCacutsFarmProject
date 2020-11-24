@@ -28,7 +28,7 @@
             android:id="@+id/counterText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.55"
+            android:layout_weight="1.5"
             android:autoSizeTextType="uniform"
             android:text=""
             android:textAlignment="center"
@@ -68,15 +68,15 @@
                 android:layout_weight="10"
                 android:layout_margin="15dp"
                 android:text="추가"
-                android:textSize="20sp"/>
+                android:textSize="27.5sp"/>
             <Button
                 android:onClick="resetButton_onClick"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="10"
-                android:layout_margin="15sp"
+                android:layout_margin="15dp"
                 android:text="초기화"
-                android:textSize="20sp" />
+                android:textSize="27.5sp" />
             <Button
                 android:onClick="printButton_onClick"
                 android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                 android:layout_weight="10"
                 android:layout_margin="15dp"
                 android:text="인쇄"
-                android:textSize="20sp" />
+                android:textSize="27.5sp" />
             <Button
                 android:onClick="connectButton_onClick"
                 android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                 android:layout_weight="10"
                 android:layout_margin="15dp"
                 android:text="재연결"
-                android:textSize="20sp" />
+                android:textSize="27.5sp" />
             <Button
                 android:onClick="cactusEditButton_onClick"
                 android:layout_width="match_parent"
@@ -100,7 +100,7 @@
                 android:layout_weight="10"
                 android:layout_margin="15dp"
                 android:text="목록 수정"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -117,7 +117,7 @@
                     android:text="0"
                     android:textAlignment="center"
                     android:gravity="center"
-                    android:textSize="20sp"/>
+                    android:textSize="25sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -126,7 +126,7 @@
                     android:text="개"
                     android:textAlignment="center"
                     android:gravity="center"
-                    android:textSize="20sp"/>
+                    android:textSize="25sp"/>
 
                 <TextView
                     android:id="@+id/totalSumText"
@@ -137,7 +137,7 @@
                     android:text="0"
                     android:textAlignment="center"
                     android:gravity="center"
-                    android:textSize="20sp"/>
+                    android:textSize="25sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -146,7 +146,7 @@
                     android:text="원"
                     android:textAlignment="center"
                     android:gravity="center"
-                    android:textSize="20sp"/>
+                    android:textSize="25sp"/>
 
 
 
@@ -173,7 +173,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -182,7 +182,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -191,7 +191,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -200,7 +200,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 

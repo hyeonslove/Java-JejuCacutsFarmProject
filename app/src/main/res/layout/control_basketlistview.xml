@@ -8,47 +8,47 @@
         android:id="@+id/titleText"
         android:layout_width="0dp"
         android:layout_weight="5"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:textAlignment="center"
         android:text="Title"
-        android:textSize="20sp"/>
+        android:textSize="27.5sp"/>
 
     <TextView
         android:id="@+id/countText"
         android:layout_width="0dp"
         android:layout_weight="3"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="27.5sp"
         android:text="Count" />
     <TextView
         android:id="@+id/priceText"
         android:layout_width="0dp"
         android:layout_weight="4"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="27.5sp"
         android:text="Price" />
     <TextView
         android:id="@+id/totalText"
         android:layout_width="0dp"
         android:layout_weight="4.5"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:gravity="center"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="27.5sp"
         android:text="Total" />
 
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="0dp"
         android:layout_weight="3.5"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:text="삭제"
-        android:textSize="20sp"/>
+        android:textSize="27.5sp"/>
 
 
 </LinearLayout>
