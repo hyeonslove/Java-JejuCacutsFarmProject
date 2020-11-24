@@ -1,19 +1,13 @@
-package com.example.jejufarmreceiptproject.Activity;
+package com.example.jejufarmreceiptproject;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
@@ -21,7 +15,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,17 +24,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.jejufarmreceiptproject.R;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 import Adapter.BasketListViewAdapter;
 import Adapter.CactusListViewAdapter;
@@ -64,12 +49,12 @@ public class MainActivity extends AppCompatActivity {
     /////////////////////////////////////////////////
     private TextView cactusText;
     private ListView cactusListView;
-    CactusListViewAdapter cactusListViewAdapter;
+    private CactusListViewAdapter cactusListViewAdapter;
     /////////////////////////////////////////////////
     //             basketListView 구현             //
     /////////////////////////////////////////////////
     private ListView basketListView;
-    BasketListViewAdapter basketListViewAdapter;
+    private BasketListViewAdapter basketListViewAdapter;
     /////////////////////////////////////////////////
     //              Total Text  구현               //
     /////////////////////////////////////////////////
@@ -86,14 +71,10 @@ public class MainActivity extends AppCompatActivity {
     /////////////////////////////////////////////////
     private boolean connected = false;
     /////////////////////////////////////////////////
-    //              Func Button 구현               //
-    /////////////////////////////////////////////////
-//    private Button addButton;
-//    private Button resetButton;
-//    private Button printButton;
-//    private Button connectButton;
-//    private Button cactusEditButton;
-    /////////////////////////////////////////////////
+    // 마지막으로 뒤로 가기 버튼을 눌렀던 시간 저장
+    private long backKeyPressedTime = 0;
+    // 첫 번째 뒤로 가기 버튼을 누를 때 표시
+    private Toast toast;
     //endregion
 
     //region General Func
@@ -228,21 +209,24 @@ public class MainActivity extends AppCompatActivity {
     //endregion
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
 
-        if(bluetoothRecvier == null){
+        if (bluetoothRecvier == null) {
             bluetoothRecvier = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     String text = intent.getStringExtra("status_message");
-                    if(text.equals("connected")) {
+                    if (text == null)
+                        return;
+
+                    if (text.equals("connected")) {
                         setTitle("제주농원 for android 연결 완료");
                         connected = true;
-                    }else if(text.equals("disconnected")){
+                    } else if (text.equals("disconnected")) {
                         setTitle("제주농원 for android 연결 끊김");
                         connected = false;
-                    }else if(text.equals("failconnected")){
+                    } else if (text.equals("failconnected")) {
                         setTitle("제주농원 for android 연결 실패");
                         connected = false;
                     }
@@ -269,21 +253,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
 
-        if(bluetoothRecvier != null){
+        if (bluetoothRecvier != null) {
             unregisterReceiver(bluetoothRecvier);
         }
     }
-    // 마지막으로 뒤로 가기 버튼을 눌렀던 시간 저장
-    private long backKeyPressedTime = 0;
-    // 첫 번째 뒤로 가기 버튼을 누를 때 표시
-    private Toast toast;
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         if (System.currentTimeMillis() > backKeyPressedTime + 2500) {
             backKeyPressedTime = System.currentTimeMillis();
             toast = Toast.makeText(this, "뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.", Toast.LENGTH_LONG);
@@ -296,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
             stopService(new Intent(MainActivity.this, BluetoothService.class));
             finish();
             toast.cancel();
-            toast = Toast.makeText(this,"이용해 주셔서 감사합니다.",Toast.LENGTH_LONG);
+            toast = Toast.makeText(this, "이용해 주셔서 감사합니다.", Toast.LENGTH_LONG);
             toast.show();
         }
     }
@@ -331,24 +310,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void printButton_onClick(View view) {
+        Intent intent = new Intent(getApplicationContext(), PrintActivity.class);
         try {
             if (connected) {
-                if(basketListViewAdapter.GetInstance().size() == 0){
+                if (basketListViewAdapter.GetInstance().size() == 0) {
                     toastSend("인쇄 할 제품이 없습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
                     return;
                 }
 
-                String send_msg = "";
-                for (BasketForm item : basketListViewAdapter.GetInstance()) {
-                    send_msg += (item.getTitle() + " " + item.getCount() + " " + item.getPrice() + "\\");
-                }
-                BluetoothService.sendData(send_msg + "\r\n");
-                toastSend("인쇄 요청에 성공하였습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
-            }else{
+                intent.putExtra("bluetooth_connected", true);
+            } else {
                 connectButton_onClick(null);
                 toastSend("블루투스 연결이 안 되어있습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
+                intent.putExtra("bluetooth_connected", false);
             }
-        }catch (Exception e){
+            intent.putExtra("list", basketListViewAdapter);
+            startActivity(intent);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -359,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
             setTitle("다시 연결 하는중");
             Thread.sleep(300);
             startService(new Intent(MainActivity.this, BluetoothService.class));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

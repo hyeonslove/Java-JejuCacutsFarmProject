@@ -8,6 +8,13 @@ public class BasketForm implements Serializable {
     private int price;
     private int total;
 
+    public BasketForm(){
+        title = "";
+        count = 0;
+        price = 0;
+        total = 0;
+    }
+
     public BasketForm(String title, int count, int price, int total) {
         this.title = title;
         this.count = count;

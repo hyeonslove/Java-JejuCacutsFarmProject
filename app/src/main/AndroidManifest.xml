@@ -14,11 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_cactus_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name="BluetoothService.BluetoothService"
+        <activity android:name=".PrintActivity"></activity>
+
+        <service
+            android:name="BluetoothService.BluetoothService"
             android:enabled="true"
-            android:exported="true"
-        />
-        <activity android:name=".Activity.MainActivity">
+            android:exported="true" />
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

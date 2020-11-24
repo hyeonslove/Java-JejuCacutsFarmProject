@@ -4,6 +4,6 @@
     android:id="@+id/counterText"
     android:layout_height="40dp"
     android:layout_width="fill_parent"
-    android:textSize="15sp"
+    android:textSize="20sp"
     android:gravity="center">
 </TextView>

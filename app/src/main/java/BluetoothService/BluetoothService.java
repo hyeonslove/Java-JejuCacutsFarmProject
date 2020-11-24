@@ -33,6 +33,7 @@ public class BluetoothService extends Service {
     private static OutputStream outputStream = null; // 블루투스에 데이터를 출력하기 위한 출력 스트림
     private InputStream inputStream = null; // 블루투스에 데이터를 입력하기 위한 입력 스트림
 
+    // PC에서 온 데이터들을 받는 스레드 클래스
     class RecvThread extends Thread {
         @Override
         public void run() {
@@ -81,6 +82,7 @@ public class BluetoothService extends Service {
         }
     }
 
+    // 연결 상태를 확인하는 스레드 클래스
     class PingThread extends Thread {
         @Override
         public void run() {
@@ -90,7 +92,7 @@ public class BluetoothService extends Service {
                     Thread.sleep(1000);
                 }
             }catch (IOException e){
-                mainActivityIntent.putExtra("status_message", "failconnected");
+                mainActivityIntent.putExtra("status_message", "disconnected");
                 sendBroadcast(mainActivityIntent);
                 return;
             } catch (Exception e) {
@@ -98,7 +100,6 @@ public class BluetoothService extends Service {
             }
         }
     }
-
 
     //region Bluetooth Func
     public static void sendData(String text) throws Exception {

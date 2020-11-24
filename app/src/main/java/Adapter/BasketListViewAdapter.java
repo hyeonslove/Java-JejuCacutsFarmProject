@@ -9,17 +9,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.jejufarmreceiptproject.Activity.MainActivity;
+import com.example.jejufarmreceiptproject.MainActivity;
 import com.example.jejufarmreceiptproject.R;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import Entity.BasketForm;
-import Entity.CactusForm;
 
-public class BasketListViewAdapter extends BaseAdapter {
+public class BasketListViewAdapter extends BaseAdapter implements Serializable{
     private ArrayList<BasketForm> list;
+    public int layout = R.layout.control_basketlistview;
 
     public BasketListViewAdapter() {
         list = new ArrayList<>();
@@ -32,7 +33,7 @@ public class BasketListViewAdapter extends BaseAdapter {
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.control_basketlistview, viewGroup, false);
+            view = inflater.inflate(layout, viewGroup, false);
         }
         DecimalFormat df = new DecimalFormat("#,###");
         TextView title = (TextView) view.findViewById(R.id.titleText);
@@ -41,21 +42,36 @@ public class BasketListViewAdapter extends BaseAdapter {
         TextView total = (TextView) view.findViewById(R.id.totalText);
         Button delButton = (Button) view.findViewById(R.id.deleteButton);
 
-        title.setText(String.valueOf(listItem.getTitle()));
-        count.setText(df.format(listItem.getCount()));
-        price.setText(df.format(listItem.getPrice()));
-        total.setText(df.format(listItem.getTotal()));
-        delButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View parentRow = (View) v.getParent();
-                ListView listView = (ListView) parentRow.getParent();
-                final int position = listView.getPositionForView(parentRow);
-                list.remove(position);
-                notifyDataSetChanged();
-                ((MainActivity)MainActivity.mContext).BasketListViewChagned();
-            }
-        });
+        if (!listItem.getTitle().equals(""))
+            title.setText(String.valueOf(listItem.getTitle()));
+        else
+            title.setText("");
+        if (listItem.getCount() != 0)
+            count.setText(df.format(listItem.getCount()) + " 박스");
+        else
+            count.setText("");
+        if (listItem.getPrice() != 0)
+            price.setText(df.format(listItem.getPrice()));
+        else
+            price.setText("");
+        if (listItem.getTotal() != 0)
+            total.setText(df.format(listItem.getTotal()) + " 원");
+        else
+            total.setText("");
+
+        if(layout == R.layout.control_basketlistview) {
+            delButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    View parentRow = (View) v.getParent();
+                    ListView listView = (ListView) parentRow.getParent();
+                    final int position = listView.getPositionForView(parentRow);
+                    list.remove(position);
+                    notifyDataSetChanged();
+                    ((MainActivity) MainActivity.mContext).BasketListViewChagned();
+                }
+            });
+        }
 
         return view;
     }
@@ -89,5 +105,17 @@ public class BasketListViewAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void appendResult(){
+        int count = 0;
+        int total = 0;
+        for(BasketForm item:list){
+            count+=item.getCount();
+            total+=item.getTotal();
+        }
+        list.add(new BasketForm());
+        list.add(new BasketForm());
+        list.add(new BasketForm("합계",count,0,total));
+        notifyDataSetChanged();
+    }
 
 }

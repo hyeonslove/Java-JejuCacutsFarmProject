@@ -41,14 +41,4 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:text="Total" />
-
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="0dp"
-        android:layout_weight="3.5"
-        android:layout_height="40dp"
-        android:text="삭제"
-        android:textSize="20sp"/>
-
-
 </LinearLayout>
