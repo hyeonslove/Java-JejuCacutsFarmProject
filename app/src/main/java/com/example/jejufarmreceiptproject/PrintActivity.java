@@ -1,20 +1,25 @@
 package com.example.jejufarmreceiptproject;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -24,6 +29,7 @@ import BluetoothService.BluetoothService;
 
 public class PrintActivity extends AppCompatActivity {
     //region Init
+    private LinearLayout container;
     /////////////////////////////////////////////////
     //             basketListView 구현             //
     /////////////////////////////////////////////////
@@ -53,6 +59,7 @@ public class PrintActivity extends AppCompatActivity {
         basketListView.setAdapter(basketListViewAdapter);
         basketListViewAdapter.appendResult();
 
+        container = (LinearLayout)findViewById(R.id.printView);
     }
 
     @Override
@@ -88,5 +95,18 @@ public class PrintActivity extends AppCompatActivity {
     public void cancelButton_onClick(View view) {
         finish();
     }
+
+    public void captureButton_onClick(View view) {
+        container.buildDrawingCache();
+        Bitmap captureView = container.getDrawingCache();
+        FileOutputStream fos;
+        try{
+            fos = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/capture.jpeg");
+            captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
     //endregion
 }

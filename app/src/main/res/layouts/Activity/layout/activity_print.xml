@@ -4,86 +4,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
+    android:orientation="vertical"
     android:weightSum="20"
-    tools:context=".PrintActivity"
-    android:orientation="vertical">
+    tools:context=".PrintActivity">
+
     <LinearLayout
+        android:id="@+id/printView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.2"
-        android:weightSum="20">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:text="이름"
-            android:textColor="@color/colorPrimary"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:textSize="20sp" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:text="수량"
-            android:textColor="@color/colorPrimary"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:textSize="20sp" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:text="단가"
-            android:textColor="@color/colorPrimary"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:textSize="20sp" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4.5"
-            android:text="금액"
-            android:textColor="@color/colorPrimary"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:textSize="20sp" />
+        android:layout_weight="18.2"
+        android:weightSum="20"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.2"
+            android:weightSum="20">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="이름"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="수량"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="단가"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4.5"
+                android:gravity="center"
+                android:text="금액"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/basketListView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="17"
+            android:background="@drawable/border" />
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/basketListView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="17"
-        android:background="@drawable/border"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.8"
         android:orientation="horizontal"
         android:weightSum="10">
-        <Button android:id="@+id/checkButton"
+
+        <Button
+            android:id="@+id/checkButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="5"
+            android:autoSizeTextType="uniform"
             android:onClick="checkButton_onClick"
-            android:text="확인"
-            android:autoSizeTextType="uniform"
-            android:layout_margin="10dp"
+            android:text="확인" />
+
+        <Button
+            android:id="@+id/captureButton"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="5.5" />
+            android:layout_margin="10dp"
+            android:layout_weight="2.5"
+            android:autoSizeTextType="uniform"
+            android:onClick="captureButton_onClick"
+            android:text="캡처" />
 
-        <TextView android:layout_height="match_parent"
+        <Button
+            android:id="@+id/cancelButton"
             android:layout_width="0dp"
-            android:layout_weight="1"/>
-
-        <Button android:id="@+id/cancelButton"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="2.5"
+            android:autoSizeTextType="uniform"
             android:onClick="cancelButton_onClick"
-            android:text="취소"
-            android:autoSizeTextType="uniform"
-            android:layout_margin="10dp"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="3.5"/>
+            android:text="취소" />
 
     </LinearLayout>
 </LinearLayout>

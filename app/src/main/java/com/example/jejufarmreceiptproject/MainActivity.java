@@ -312,12 +312,11 @@ public class MainActivity extends AppCompatActivity {
     public void printButton_onClick(View view) {
         Intent intent = new Intent(getApplicationContext(), PrintActivity.class);
         try {
+            if (basketListViewAdapter.GetInstance().size() == 0) {
+                toastSend("인쇄 할 제품이 없습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
+                return;
+            }
             if (connected) {
-                if (basketListViewAdapter.GetInstance().size() == 0) {
-                    toastSend("인쇄 할 제품이 없습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
-                    return;
-                }
-
                 intent.putExtra("bluetooth_connected", true);
             } else {
                 connectButton_onClick(null);

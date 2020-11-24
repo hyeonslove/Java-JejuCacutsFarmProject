@@ -47,7 +47,7 @@ public class BasketListViewAdapter extends BaseAdapter implements Serializable{
         else
             title.setText("");
         if (listItem.getCount() != 0)
-            count.setText(df.format(listItem.getCount()) + " 박스");
+            count.setText(df.format(listItem.getCount()));
         else
             count.setText("");
         if (listItem.getPrice() != 0)
@@ -55,7 +55,7 @@ public class BasketListViewAdapter extends BaseAdapter implements Serializable{
         else
             price.setText("");
         if (listItem.getTotal() != 0)
-            total.setText(df.format(listItem.getTotal()) + " 원");
+            total.setText(df.format(listItem.getTotal()));
         else
             total.setText("");
 
