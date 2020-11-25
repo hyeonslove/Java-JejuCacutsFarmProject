@@ -111,8 +111,19 @@ public class PrintActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
+    private void sendMMS(Bitmap bitmap, String now){
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra("sms_body", "제주농원 217-05252-005911\n" + now + " 발송");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(),bitmap));
+        sendIntent.setType("image/jpg");
+        startActivity(sendIntent);
+    }
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void captureButton_onClick(View view) {
+    public void mmsButton_onClick(View view) {
+
         container.buildDrawingCache();
         Bitmap captureView = container.getDrawingCache();
         FileOutputStream fos;
@@ -123,12 +134,9 @@ public class PrintActivity extends AppCompatActivity {
 
             fos = new FileOutputStream("mnt/sdcard/cactus/" + nowString + ".JPG");
             captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            
+            sendMMS(captureView, nowString);
 
-            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.putExtra("sms_body", "제주농원 217-05252-005911\n" + nowString + " 발송");
-            sendIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(),captureView));
-            sendIntent.setType("image/jpg");
-            startActivity(sendIntent);
             finish();
         }catch (FileNotFoundException e){
             e.printStackTrace();

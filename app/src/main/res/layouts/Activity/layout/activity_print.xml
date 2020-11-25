@@ -95,13 +95,13 @@
             android:text="확인" />
 
         <Button
-            android:id="@+id/captureButton"
+            android:id="@+id/mmsButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="2.5"
             android:autoSizeTextType="uniform"
-            android:onClick="captureButton_onClick"
+            android:onClick="mmsButton_onClick"
             android:text="문자" />
 
         <Button
