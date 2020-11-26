@@ -114,7 +114,7 @@ public class PrintActivity extends AppCompatActivity {
     private void sendMMS(Bitmap bitmap, String now){
 
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
-        sendIntent.putExtra("sms_body", "제주농원 217-05252-005911\n" + now + " 발송");
+        sendIntent.putExtra("sms_body", "제주농원\n농협 217-05252-005911\n" + now + " 발송");
         sendIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(),bitmap));
         sendIntent.setType("image/jpg");
         startActivity(sendIntent);
@@ -134,7 +134,7 @@ public class PrintActivity extends AppCompatActivity {
 
             fos = new FileOutputStream("mnt/sdcard/cactus/" + nowString + ".JPG");
             captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            
+
             sendMMS(captureView, nowString);
 
             finish();
