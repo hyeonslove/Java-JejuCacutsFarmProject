@@ -342,7 +342,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void cactusEditButton_onClick(View view) {
-
+        Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+        startActivity(intent);
     }
     //endregion
 

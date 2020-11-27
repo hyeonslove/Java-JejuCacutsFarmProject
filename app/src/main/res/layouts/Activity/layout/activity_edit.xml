@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:weightSum="20"
+    tools:context=".EditActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="20">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:autoSizeTextType="uniform"
+            android:text="제품"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:autoSizeTextType="uniform"
+            android:text="단가"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="17"
+        android:orientation="horizontal"
+        android:weightSum="20">
+
+        <ListView
+            android:id="@+id/cactusListView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="14" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:weightSum="20">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:weightSum="20">
+                <EditText android:id="@+id/EditTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="25sp"
+                    android:hint="제품 이름"
+                    android:layout_weight="10"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="10"
+                    android:orientation="horizontal"
+                    android:weightSum="20">
+                    <EditText android:id="@+id/EditPriceText"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textSize="25sp"
+                        android:hint="단가"
+                        android:layout_weight="12"/>
+
+                    <EditText android:id="@+id/EditIndexText"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textSize="25sp"
+                        android:text="0"
+                        android:hint="순서"
+                        android:layout_weight="8"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="11">
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5">
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:weightSum="20">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="14"
+            android:autoSizeTextType="uniform"
+            android:onClick="checkEditButton_onClick"
+            android:text="확인" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="6"
+
+            android:autoSizeTextType="uniform"
+            android:onClick="cancelEditButton_onClick"
+            android:text="취소" />
+    </LinearLayout>
+
+</LinearLayout>
