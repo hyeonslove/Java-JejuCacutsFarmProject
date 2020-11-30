@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="7"
+            android:layout_weight="8"
             android:autoSizeTextType="uniform"
             android:text="제품"
             android:textAlignment="center"
@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="6"
             android:autoSizeTextType="uniform"
             android:text="단가"
             android:textAlignment="center"
@@ -94,8 +94,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="11">
+                android:layout_weight="11"
+                android:orientation="vertical"
+                android:weightSum="20">
 
+                <Button android:id="@+id/editButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:autoSizeTextType="uniform"
+                    android:text="추가"
+                    android:onClick="editButton_onClick"
+                    android:layout_weight="3"/>
+
+                <Button android:id="@+id/deleteButton"
+                    android:layout_width="match_parent"
+                    android:onClick="deleteButton_onClick"
+                    android:layout_height="0dp"
+                    android:autoSizeTextType="uniform"
+                    android:layout_margin="5dp"
+                    android:text="삭제"
+                    android:layout_weight="3"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

@@ -162,28 +162,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Object vo = adapterView.getAdapter().getItem(i);  //리스트뷰의 포지션 내용을 가져옴.
-                cactusText.setText(vo.toString());
+                cactusText.setText(vo.toString().split("    ")[0] + "    " + vo.toString().split("    ")[1]);
             }
         });
 
-        cactusListViewAdapter.append("선인장1", 5000);
-        cactusListViewAdapter.append("선인장2", 6000);
-        cactusListViewAdapter.append("선인장3", 7000);
-        cactusListViewAdapter.append("선인장4", 8000);
-        cactusListViewAdapter.append("선인장5", 9000);
-        cactusListViewAdapter.append("선인장6", 10000);
-        cactusListViewAdapter.append("선인장7", 51000);
-        cactusListViewAdapter.append("선인장8", 52000);
-        cactusListViewAdapter.append("선인장9", 53000);
-        cactusListViewAdapter.append("선인장10", 14000);
-        cactusListViewAdapter.append("선인장11", 15000);
-        cactusListViewAdapter.append("선인장12", 15000);
-        cactusListViewAdapter.append("선인장13", 15000);
-        cactusListViewAdapter.append("선인장14", 15000);
-        cactusListViewAdapter.append("선인장15", 25000);
-        cactusListViewAdapter.append("선인장16", 25000);
-        cactusListViewAdapter.append("선인장17", 25000);
-        cactusListViewAdapter.append("선인장18", 25000);
+        cactusListViewAdapter.append("Cactus0","선인장1", 5000);
+        cactusListViewAdapter.append("Cactus1","선인장2", 6000);
+        cactusListViewAdapter.append("Cactus2","선인장3", 7000);
+        cactusListViewAdapter.append("Cactus3","선인장4", 8000);
+        cactusListViewAdapter.append("Cactus4","선인장5", 9000);
+        cactusListViewAdapter.append("Cactus5","선인장6", 10000);
+        cactusListViewAdapter.append("Cactus6","선인장7", 51000);
+        cactusListViewAdapter.append("Cactus7","선인장8", 52000);
+        cactusListViewAdapter.append("Cactus8","선인장9", 53000);
+        cactusListViewAdapter.append("Cactus9","선인장10", 14000);
+        cactusListViewAdapter.append("Cactus10","선인장11", 15000);
+        cactusListViewAdapter.append("Cactus11","선인장12", 15000);
+        cactusListViewAdapter.append("Cactus12","선인장13", 15000);
+        cactusListViewAdapter.append("Cactus13","선인장14", 15000);
+        cactusListViewAdapter.append("Cactus14","선인장15", 25000);
+        cactusListViewAdapter.append("Cactus15","선인장16", 25000);
+        cactusListViewAdapter.append("Cactus16","선인장17", 25000);
+        cactusListViewAdapter.append("Cactus17","선인장18", 25000);
 
         cactusListViewAdapter.notifyDataSetChanged();
     }

@@ -50,7 +50,7 @@ public class CactusListViewAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return list.get(i).getTitle() + "    " + list.get(i).getPrice();
+        return list.get(i).getTitle() + "    " + list.get(i).getPrice() + "    " + list.get(i).getKey();
     }
 
     @Override
@@ -62,9 +62,7 @@ public class CactusListViewAdapter extends BaseAdapter {
         list.clear();
     }
 
-    public void append(String title, int price){
-        list.add(new CactusForm(title, price));
+    public void append(String key, String title, int price){
+        list.add(new CactusForm(key, title, price));
     }
-
-
 }
