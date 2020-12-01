@@ -14,11 +14,14 @@
         android:layout_weight="1"
         android:orientation="horizontal"
         android:weightSum="20">
-
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="8"
+            android:layout_weight="7"
             android:autoSizeTextType="uniform"
             android:text="제품"
             android:textAlignment="center"
@@ -28,7 +31,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="6"
+            android:layout_weight="5"
             android:autoSizeTextType="uniform"
             android:text="단가"
             android:textAlignment="center"

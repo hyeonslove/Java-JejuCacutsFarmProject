@@ -81,8 +81,8 @@ public class BasketListViewAdapter extends BaseAdapter implements Serializable{
         return list.size();
     }
 
-    public ArrayList<BasketForm> GetInstance() {
-        return list;
+    public ArrayList<BasketForm> getList() {
+        return this.list;
     }
 
     @Override

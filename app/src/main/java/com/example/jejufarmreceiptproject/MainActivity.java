@@ -32,6 +32,7 @@ import Adapter.BasketListViewAdapter;
 import Adapter.CactusListViewAdapter;
 import BluetoothService.BluetoothService;
 import Entity.BasketForm;
+import Entity.CactusForm;
 
 public class MainActivity extends AppCompatActivity {
     public static Context mContext;
@@ -62,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView totalSumText;
 
     /////////////////////////////////////////////////
-    //           Bluetooth  Reciver 구현           //
+    //             Intent Reciver 구현             //
     /////////////////////////////////////////////////
     private BroadcastReceiver bluetoothRecvier;
+    private BroadcastReceiver editRecvier;
 
     /////////////////////////////////////////////////
     //                 Status 구현                 //
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     //region General Func
     public void BasketListViewChagned() {
         int count = 0, sum = 0;
-        for (BasketForm item : basketListViewAdapter.GetInstance()) {
+        for (BasketForm item : basketListViewAdapter.getList()) {
             count += item.getCount();
             sum += item.getTotal();
         }
@@ -166,24 +168,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        cactusListViewAdapter.append("Cactus0","선인장1", 5000);
-        cactusListViewAdapter.append("Cactus1","선인장2", 6000);
-        cactusListViewAdapter.append("Cactus2","선인장3", 7000);
-        cactusListViewAdapter.append("Cactus3","선인장4", 8000);
-        cactusListViewAdapter.append("Cactus4","선인장5", 9000);
-        cactusListViewAdapter.append("Cactus5","선인장6", 10000);
-        cactusListViewAdapter.append("Cactus6","선인장7", 51000);
-        cactusListViewAdapter.append("Cactus7","선인장8", 52000);
-        cactusListViewAdapter.append("Cactus8","선인장9", 53000);
-        cactusListViewAdapter.append("Cactus9","선인장10", 14000);
-        cactusListViewAdapter.append("Cactus10","선인장11", 15000);
-        cactusListViewAdapter.append("Cactus11","선인장12", 15000);
-        cactusListViewAdapter.append("Cactus12","선인장13", 15000);
-        cactusListViewAdapter.append("Cactus13","선인장14", 15000);
-        cactusListViewAdapter.append("Cactus14","선인장15", 25000);
-        cactusListViewAdapter.append("Cactus15","선인장16", 25000);
-        cactusListViewAdapter.append("Cactus16","선인장17", 25000);
-        cactusListViewAdapter.append("Cactus17","선인장18", 25000);
+        cactusListViewAdapter.append(0,  "선인장1", 5000);
+        cactusListViewAdapter.append(0, "선인장2", 6000);
+        cactusListViewAdapter.append(0, "선인장3", 7000);
+        cactusListViewAdapter.append(0, "선인장4", 8000);
+        cactusListViewAdapter.append(0, "선인장5", 9000);
+        cactusListViewAdapter.append(0, "선인장6", 10000);
+        cactusListViewAdapter.append(0, "선인장7", 51000);
+        cactusListViewAdapter.append(0, "선인장8", 52000);
+        cactusListViewAdapter.append(0, "선인장9", 53000);
+        cactusListViewAdapter.append(0, "선인장10", 14000);
+        cactusListViewAdapter.append(0, "선인장11", 15000);
+        cactusListViewAdapter.append(0, "선인장12", 15000);
+        cactusListViewAdapter.append(0, "선인장13", 15000);
+        cactusListViewAdapter.append(0, "선인장14", 15000);
+        cactusListViewAdapter.append(0, "선인장15", 25000);
+        cactusListViewAdapter.append(0, "선인장16", 25000);
+        cactusListViewAdapter.append(0, "선인장17", 25000);
+        cactusListViewAdapter.append(0, "선인장18", 25000);
 
         cactusListViewAdapter.notifyDataSetChanged();
     }
@@ -234,6 +236,21 @@ public class MainActivity extends AppCompatActivity {
             };
         }
 
+        if (editRecvier == null) {
+            editRecvier = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    CactusListViewAdapter list = (CactusListViewAdapter) intent.getSerializableExtra("cactus_list");
+                    cactusListViewAdapter.clear();
+                    for (CactusForm item : list.getList()) {
+                        cactusListViewAdapter.append(item.getIndex(), item.getTitle(), item.getPrice());
+                    }
+                    cactusListViewAdapter.notifyDataSetChanged();
+                }
+            };
+        }
+
+        registerReceiver(editRecvier, new IntentFilter("editActivity"));
         registerReceiver(bluetoothRecvier, new IntentFilter("bluetoothService"));
     }
 
@@ -258,6 +275,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (bluetoothRecvier != null) {
             unregisterReceiver(bluetoothRecvier);
+        }
+
+        if (editRecvier != null) {
+            unregisterReceiver(editRecvier);
         }
     }
 
@@ -312,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
     public void printButton_onClick(View view) {
         Intent intent = new Intent(getApplicationContext(), PrintActivity.class);
         try {
-            if (basketListViewAdapter.GetInstance().size() == 0) {
+            if (basketListViewAdapter.getList().size() == 0) {
                 toastSend("인쇄 할 제품이 없습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
                 return;
             }

@@ -5,18 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.jejufarmreceiptproject.R;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import Entity.CactusForm;
 
-public class CactusListViewAdapter extends BaseAdapter {
+public class CactusListViewAdapter extends BaseAdapter implements Serializable {
     private ArrayList<CactusForm> list;
+    public int layout = R.layout.control_cactuslistview;
 
     public CactusListViewAdapter(){
         list = new ArrayList<>();
@@ -30,11 +31,14 @@ public class CactusListViewAdapter extends BaseAdapter {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            view = inflater.inflate(R.layout.control_cactuslistview, viewGroup, false);
+            view = inflater.inflate(layout, viewGroup, false);
 
         }
         DecimalFormat df = new DecimalFormat("#,###");
-
+        if(layout == R.layout.control_cactus_indexlistview){
+            TextView index = (TextView) view.findViewById(R.id.indexText);
+            index.setText(listItem.getIndex() + "");
+        }
         TextView title = (TextView) view.findViewById(R.id.titleText);
         TextView price = (TextView) view.findViewById(R.id.priceText);
 
@@ -50,7 +54,7 @@ public class CactusListViewAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return list.get(i).getTitle() + "    " + list.get(i).getPrice() + "    " + list.get(i).getKey();
+        return list.get(i).getTitle() + "    " + list.get(i).getPrice() + "    " + list.get(i).getIndex();
     }
 
     @Override
@@ -62,7 +66,15 @@ public class CactusListViewAdapter extends BaseAdapter {
         list.clear();
     }
 
-    public void append(String key, String title, int price){
-        list.add(new CactusForm(key, title, price));
+    public void append(int index, CactusForm item){
+        list.add(index, item);
+    }
+
+    public void append(int index, String title, int price){
+        list.add(new CactusForm(index, title, price));
+    }
+
+    public ArrayList<CactusForm> getList(){
+        return this.list;
     }
 }

@@ -3,12 +3,12 @@ package Entity;
 import java.io.Serializable;
 
 public class CactusForm implements Serializable {
-    private String key;
+    private int index;
     private String title;
     private int price;
 
-    public CactusForm(String key, String title, int price) {
-        this.key = key;
+    public CactusForm(int index, String title, int price) {
+        this.index = index;
         this.title = title;
         this.price = price;
     }
@@ -29,11 +29,11 @@ public class CactusForm implements Serializable {
         this.price = price;
     }
 
-    public String getKey(){
-        return this.key;
+    public int getIndex(){
+        return this.index;
     }
 
-    public void setKey(String key){
-        this.key = key;
+    public void setIndex(int index){
+        this.index = index;
     }
 }

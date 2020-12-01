@@ -88,7 +88,7 @@ public class PrintActivity extends AppCompatActivity {
     public void checkButton_onClick(View view) {
         try {
             String send_msg = "";
-            for (BasketForm item : basketListViewAdapter.GetInstance()) {
+            for (BasketForm item : basketListViewAdapter.getList()) {
                 send_msg = (item.getTitle() + " " + item.getCount() + " " + item.getPrice() + "\\");
             }
             BluetoothService.sendData(send_msg + "\r\n");
