@@ -59,7 +59,7 @@ public class BasketListViewAdapter extends BaseAdapter implements Serializable{
         else
             total.setText("");
 
-        if(layout == R.layout.control_basketlistview) {
+        if (layout == R.layout.control_basketlistview) {
             delButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,6 +95,7 @@ public class BasketListViewAdapter extends BaseAdapter implements Serializable{
         return i;
     }
 
+
     public void clear() {
         list.clear();
         notifyDataSetChanged();
@@ -105,16 +106,16 @@ public class BasketListViewAdapter extends BaseAdapter implements Serializable{
         notifyDataSetChanged();
     }
 
-    public void appendResult(){
+    public void appendResult() {
         int count = 0;
         int total = 0;
-        for(BasketForm item:list){
-            count+=item.getCount();
-            total+=item.getTotal();
+        for (BasketForm item : list) {
+            count += item.getCount();
+            total += item.getTotal();
         }
         list.add(new BasketForm());
         list.add(new BasketForm());
-        list.add(new BasketForm("합계",count,0,total));
+        list.add(new BasketForm("합계", count, 0, total));
         notifyDataSetChanged();
     }
 

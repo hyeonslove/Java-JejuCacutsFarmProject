@@ -1,9 +1,13 @@
 package com.example.jejufarmreceiptproject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -11,7 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.ini4j.Ini;
@@ -101,6 +107,14 @@ public class EditActivity extends AppCompatActivity {
     }
     //endregion
 
+    public void toastSend(String text, float textsize, int showtime, int postition, int offsetX, int offsetY) {
+        SpannableStringBuilder biggerText = new SpannableStringBuilder(text);
+        biggerText.setSpan(new RelativeSizeSpan(textsize), 0, text.length(), 0);
+        Toast toast = Toast.makeText(getApplicationContext(), biggerText, showtime);
+        toast.setGravity(postition, offsetX, offsetY);
+        toast.show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,14 +134,16 @@ public class EditActivity extends AppCompatActivity {
     //region Button Event
 
     public void editButton_onClick(View view) {
+        if (indexText.getText().toString().equals("") || titleText.getText().length() < 2 || titleText.getText().toString().equals("") || priceText.getText().toString().equals("")) {
+            toastSend("입력이 잘못되었습니다.", 1.5f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
+            return;
+        }
         if (editButton.getText().equals("추가")) {
             if (Integer.parseInt(indexText.getText().toString()) > cactusListViewAdapter.getCount()) {
                 indexText.setText(cactusListViewAdapter.getCount() + "");
             } else if (Integer.parseInt(indexText.getText().toString()) == cactusListViewAdapter.getCount()) {
                 cactusListViewAdapter.append(Integer.parseInt(indexText.getText().toString()), titleText.getText().toString(), Integer.parseInt(priceText.getText().toString()));
-                titleText.setText("");
-                priceText.setText("");
-                indexText.setText(cactusListViewAdapter.getCount() + "");
+
             } else {
                 int index = Integer.parseInt(indexText.getText().toString());
                 cactusListViewAdapter.append(index, new CactusForm(index, titleText.getText().toString(), Integer.parseInt(priceText.getText().toString())));
@@ -135,9 +151,39 @@ public class EditActivity extends AppCompatActivity {
                     cactusListViewAdapter.getList().get(i).setIndex(i);
                 }
             }
+            titleText.setText("");
+            priceText.setText("");
+            indexText.setText(cactusListViewAdapter.getCount() + "");
         } else if (editButton.getText().equals("수정")) {
             if (selected_index != Integer.parseInt(indexText.getText().toString())) {
                 // Index가 달라짐 -> 위치변경 필요
+                // TODO: Swap이 아닌, 한칸씩 밀리는 방법으로 추후 변경예정.\
+                int n = selected_index;
+                int m = Integer.parseInt(indexText.getText().toString());
+                if (m > cactusListViewAdapter.getCount()) {
+                    m = cactusListViewAdapter.getCount() - 1;
+                }
+                CactusForm temp = (CactusForm) cactusListViewAdapter.getList().get(n).clone();
+                temp.setIndex(m);
+                temp.setTitle(titleText.getText().toString());
+                temp.setPrice(Integer.parseInt(priceText.getText().toString()));
+                if (n > m) {
+                    for (int i = n; i > m; i--) {
+                        cactusListViewAdapter.getList().get(i).setIndex(cactusListViewAdapter.getList().get(i - 1).getIndex() + 1);
+                        cactusListViewAdapter.getList().get(i).setTitle(cactusListViewAdapter.getList().get(i - 1).getTitle());
+                        cactusListViewAdapter.getList().get(i).setPrice(cactusListViewAdapter.getList().get(i - 1).getPrice());
+                    }
+                } else {
+                    for (int i = n; i < m; i++) {
+                        cactusListViewAdapter.getList().get(i).setIndex(cactusListViewAdapter.getList().get(i + 1).getIndex() - 1);
+                        cactusListViewAdapter.getList().get(i).setTitle(cactusListViewAdapter.getList().get(i + 1).getTitle());
+                        cactusListViewAdapter.getList().get(i).setPrice(cactusListViewAdapter.getList().get(i + 1).getPrice());
+                    }
+                }
+                cactusListViewAdapter.getList().get(m).setIndex(temp.getIndex());
+                cactusListViewAdapter.getList().get(m).setTitle(temp.getTitle());
+                cactusListViewAdapter.getList().get(m).setPrice(temp.getPrice());
+                /*region Swap Changed
                 int price;
                 String title;
                 int pres_index = Integer.parseInt(indexText.getText().toString());
@@ -151,7 +197,7 @@ public class EditActivity extends AppCompatActivity {
                 cactusListViewAdapter.getList().get(pres_index).setPrice(Integer.parseInt(priceText.getText().toString()));
 
                 cactusListViewAdapter.getList().get(selected_index).setTitle(title);
-                cactusListViewAdapter.getList().get(selected_index).setPrice(price);
+                cactusListViewAdapter.getList().get(selected_index).setPrice(price);*/
 
             } else {
                 cactusListViewAdapter.getList().get(selected_index).setTitle(titleText.getText().toString());
@@ -167,6 +213,15 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void deleteButton_onClick(View view) {
+        if (indexText.getText().toString().equals("")) {
+            toastSend("입력이 잘못되었습니다.", 1.5f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
+            return;
+        }
+
+        if (cactusListViewAdapter.getCount() < 1) {
+            toastSend("삭제 할 제품이 없습니다.", 1.5f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
+            return;
+        }
         int pos = Integer.parseInt(indexText.getText().toString());
         int idx;
         for (idx = pos; idx < cactusListViewAdapter.getCount() - 1; idx++) {
@@ -175,9 +230,10 @@ public class EditActivity extends AppCompatActivity {
         }
         cactusListViewAdapter.getList().remove(cactusListViewAdapter.getCount() - 1);
         cactusListViewAdapter.notifyDataSetChanged();
-        indexText.setText("");
+        indexText.setText(cactusListViewAdapter.getCount() + "");
         titleText.setText("");
         priceText.setText("");
+        editButton.setText("추가");
     }
 
     public void checkEditButton_onClick(View view) {

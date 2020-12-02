@@ -2,7 +2,7 @@ package Entity;
 
 import java.io.Serializable;
 
-public class BasketForm implements Serializable {
+public class BasketForm implements Serializable,Cloneable {
     private String title;
     private int count;
     private int price;
@@ -23,6 +23,15 @@ public class BasketForm implements Serializable {
     }
 
 
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public String getTitle() {
         return title;
     }

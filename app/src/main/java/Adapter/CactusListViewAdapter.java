@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import Entity.CactusForm;
 
-public class CactusListViewAdapter extends BaseAdapter implements Serializable {
+public class CactusListViewAdapter extends BaseAdapter implements Serializable{
     private ArrayList<CactusForm> list;
     public int layout = R.layout.control_cactuslistview;
 
@@ -61,6 +61,7 @@ public class CactusListViewAdapter extends BaseAdapter implements Serializable {
     public long getItemId(int i) {
         return i;
     }
+
 
     public void clear(){
         list.clear();

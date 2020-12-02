@@ -67,6 +67,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:textSize="25sp"
+                    android:singleLine="false"
+                    android:inputType="text"
+                    android:scrollHorizontally="false"
                     android:hint="제품 이름"
                     android:layout_weight="10"/>
                 <LinearLayout

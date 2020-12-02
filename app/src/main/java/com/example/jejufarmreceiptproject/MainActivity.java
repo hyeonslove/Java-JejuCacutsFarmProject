@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        stopService(new Intent(MainActivity.this, BluetoothService.class));
         if (bluetoothRecvier != null) {
             unregisterReceiver(bluetoothRecvier);
         }
@@ -284,6 +284,11 @@ public class MainActivity extends AppCompatActivity {
         if (editRecvier != null) {
             unregisterReceiver(editRecvier);
         }
+        moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+        finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+        android.os.Process.killProcess(android.os.Process.myPid());
+//        ActivityCompat.finishAffinity(this);
+//        System.exit(0);
     }
 
     @Override
@@ -302,6 +307,7 @@ public class MainActivity extends AppCompatActivity {
             toast.cancel();
             toast = Toast.makeText(this, "이용해 주셔서 감사합니다.", Toast.LENGTH_LONG);
             toast.show();
+
         }
     }
 
@@ -344,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
             if (connected) {
                 intent.putExtra("bluetooth_connected", true);
             } else {
-//                connectButton_onClick(null);
+                //connectButton_onClick(null);
                 toastSend("블루투스 연결이 안 되어있습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
                 intent.putExtra("bluetooth_connected", false);
             }

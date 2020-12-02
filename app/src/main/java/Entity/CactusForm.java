@@ -2,7 +2,7 @@ package Entity;
 
 import java.io.Serializable;
 
-public class CactusForm implements Serializable {
+public class CactusForm implements Serializable,Cloneable {
     private int index;
     private String title;
     private int price;
@@ -11,6 +11,16 @@ public class CactusForm implements Serializable {
         this.index = index;
         this.title = title;
         this.price = price;
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public String getTitle() {
