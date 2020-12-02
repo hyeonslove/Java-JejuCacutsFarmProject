@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     // CounterText와 CounterListView를 한번에 처리해주는 Init
     private void iniSetting() {
         try {
-            ini = new Ini(new FileInputStream("mnt/sdcard/setting.ini"));
+            ini = new Ini(new FileInputStream("mnt/sdcard/Settings.ini"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < max_product; i++) {
             String obj = ini.get("CactusList", "Cactus" + i);
             if (obj != null) {
-                cactusListViewAdapter.append(i, obj.split(" ")[0], Integer.parseInt(obj.split(" ")[1]));
+                cactusListViewAdapter.append(i, obj.split("\\|\\|")[0], Integer.parseInt(obj.split("\\|\\|")[1]));
                 System.out.println(obj);
             }
         }

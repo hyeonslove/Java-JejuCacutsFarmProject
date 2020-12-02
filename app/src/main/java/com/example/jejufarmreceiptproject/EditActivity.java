@@ -82,7 +82,7 @@ public class EditActivity extends AppCompatActivity {
         for (int i = 0; i < max_product; i++) {
             String obj = ini.get("CactusList", "Cactus" + i);
             if (obj != null) {
-                cactusListViewAdapter.append(i, obj.split(" ")[0], Integer.parseInt(obj.split(" ")[1]));
+                cactusListViewAdapter.append(i, obj.split("\\|\\|")[0], Integer.parseInt(obj.split("\\|\\|")[1]));
                 System.out.println(obj);
             }
         }
@@ -100,7 +100,7 @@ public class EditActivity extends AppCompatActivity {
 
     private void iniSetting() {
         try {
-            ini = new Ini(new FileInputStream("mnt/sdcard/setting.ini"));
+            ini = new Ini(new FileInputStream("mnt/sdcard/Settings.ini"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -240,11 +240,11 @@ public class EditActivity extends AppCompatActivity {
         try {
             ini.remove("CactusList");
             for (CactusForm item : cactusListViewAdapter.getList())
-                ini.put("CactusList", "Cactus" + item.getIndex(), item.getTitle() + " " + item.getPrice());
+                ini.put("CactusList", "Cactus" + item.getIndex(), item.getTitle() + "||" + item.getPrice());
             editActivityIntent.putExtra("cactus_list", cactusListViewAdapter);
             sendBroadcast(editActivityIntent);
 
-            ini.store(new FileOutputStream("mnt/sdcard/setting.ini"));
+            ini.store(new FileOutputStream("mnt/sdcard/Settings.ini"));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
