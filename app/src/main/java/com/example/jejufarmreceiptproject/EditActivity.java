@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import Adapter.CactusListViewAdapter;
@@ -27,6 +28,7 @@ import Entity.CactusForm;
 
 public class EditActivity extends AppCompatActivity {
     //region define
+    /////////////////////////////////////////////////
     public static Intent editActivityIntent;
     private int max_product;
     private int selected_index = -1;
@@ -41,7 +43,7 @@ public class EditActivity extends AppCompatActivity {
     private EditText indexText;
     private ListView cactusListView;
     private CactusListViewAdapter cactusListViewAdapter;
-
+    /////////////////////////////////////////////////
     private Ini ini;
 
     //endregion
@@ -91,9 +93,8 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void iniSetting() {
-        AssetManager aMgr = getResources().getAssets();
         try {
-            ini = new Ini(aMgr.open("setting.ini"));
+            ini = new Ini(new FileInputStream("mnt/sdcard/setting.ini"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -166,13 +167,28 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void deleteButton_onClick(View view) {
-
+        int pos = Integer.parseInt(indexText.getText().toString());
+        int idx;
+        for (idx = pos; idx < cactusListViewAdapter.getCount() - 1; idx++) {
+            cactusListViewAdapter.getList().get(idx).setTitle(cactusListViewAdapter.getList().get(idx + 1).getTitle());
+            cactusListViewAdapter.getList().get(idx).setPrice(cactusListViewAdapter.getList().get(idx + 1).getPrice());
+        }
+        cactusListViewAdapter.getList().remove(cactusListViewAdapter.getCount() - 1);
+        cactusListViewAdapter.notifyDataSetChanged();
+        indexText.setText("");
+        titleText.setText("");
+        priceText.setText("");
     }
 
     public void checkEditButton_onClick(View view) {
         try {
+            ini.remove("CactusList");
+            for (CactusForm item : cactusListViewAdapter.getList())
+                ini.put("CactusList", "Cactus" + item.getIndex(), item.getTitle() + " " + item.getPrice());
             editActivityIntent.putExtra("cactus_list", cactusListViewAdapter);
             sendBroadcast(editActivityIntent);
+
+            ini.store(new FileOutputStream("mnt/sdcard/setting.ini"));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

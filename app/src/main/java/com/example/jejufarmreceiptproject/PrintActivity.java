@@ -74,6 +74,7 @@ public class PrintActivity extends AppCompatActivity {
     public void onBackPressed() {
 
     }
+
     //region General Func
     public void toastSend(String text, float textsize, int showtime, int postition, int offsetX, int offsetY) {
         SpannableStringBuilder biggerText = new SpannableStringBuilder(text);
@@ -112,14 +113,12 @@ public class PrintActivity extends AppCompatActivity {
     }
 
     private void sendMMS(Bitmap bitmap, String now){
-
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
         sendIntent.putExtra("sms_body", "제주농원\n농협 217-05252-005911\n" + now + " 발송");
         sendIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(),bitmap));
         sendIntent.setType("image/jpg");
         startActivity(sendIntent);
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void mmsButton_onClick(View view) {

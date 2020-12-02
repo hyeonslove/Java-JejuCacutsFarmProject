@@ -24,6 +24,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import org.ini4j.Ini;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -77,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     private long backKeyPressedTime = 0;
     // 첫 번째 뒤로 가기 버튼을 누를 때 표시
     private Toast toast;
+
+    private Ini ini;
     //endregion
 
     //region General Func
@@ -126,6 +132,14 @@ public class MainActivity extends AppCompatActivity {
 
     //region Init
     // CounterText와 CounterListView를 한번에 처리해주는 Init
+    private void iniSetting() {
+        try {
+            ini = new Ini(new FileInputStream("mnt/sdcard/setting.ini"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void Init_CounterListView() {
         counterList = new ArrayList<>();
         for (int i = 0; i < 10; i++)
@@ -168,25 +182,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        cactusListViewAdapter.append(0,  "선인장1", 5000);
-        cactusListViewAdapter.append(0, "선인장2", 6000);
-        cactusListViewAdapter.append(0, "선인장3", 7000);
-        cactusListViewAdapter.append(0, "선인장4", 8000);
-        cactusListViewAdapter.append(0, "선인장5", 9000);
-        cactusListViewAdapter.append(0, "선인장6", 10000);
-        cactusListViewAdapter.append(0, "선인장7", 51000);
-        cactusListViewAdapter.append(0, "선인장8", 52000);
-        cactusListViewAdapter.append(0, "선인장9", 53000);
-        cactusListViewAdapter.append(0, "선인장10", 14000);
-        cactusListViewAdapter.append(0, "선인장11", 15000);
-        cactusListViewAdapter.append(0, "선인장12", 15000);
-        cactusListViewAdapter.append(0, "선인장13", 15000);
-        cactusListViewAdapter.append(0, "선인장14", 15000);
-        cactusListViewAdapter.append(0, "선인장15", 25000);
-        cactusListViewAdapter.append(0, "선인장16", 25000);
-        cactusListViewAdapter.append(0, "선인장17", 25000);
-        cactusListViewAdapter.append(0, "선인장18", 25000);
-
+        int max_product = Integer.parseInt(ini.get("ProgramSettings", "MAX_PRODUCT"));
+        for (int i = 0; i < max_product; i++) {
+            String obj = ini.get("CactusList", "Cactus" + i);
+            if (obj != null) {
+                cactusListViewAdapter.append(i, obj.split(" ")[0], Integer.parseInt(obj.split(" ")[1]));
+                System.out.println(obj);
+            }
+        }
         cactusListViewAdapter.notifyDataSetChanged();
     }
 
@@ -203,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void InitAll() {
+        iniSetting();
         Init_CounterListView();
         Init_CactusListVIew();
         Init_BasketListView();
