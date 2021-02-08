@@ -84,7 +84,7 @@ public class EditActivity extends AppCompatActivity {
         ReadCacutsListDB();
 
         cactusListViewAdapter.notifyDataSetChanged();
-        indexText.setText(cactusListViewAdapter.getCount() + "");
+        indexText.setText(sqlite.GetMaxUid() + "");
     }
 
     private void init() {
@@ -154,7 +154,7 @@ public class EditActivity extends AppCompatActivity {
 
             titleText.setText("");
             priceText.setText("");
-            indexText.setText(cactusListViewAdapter.getCount() + "");
+            indexText.setText(sqlite.GetMaxUid() + "");
         } else if (editButton.getText().equals("수정")) {
             sqlite.Update(new CactusForm(Integer.parseInt(indexText.getText().toString()), titleText.getText().toString(), Integer.parseInt(priceText.getText().toString())));
 
@@ -162,7 +162,7 @@ public class EditActivity extends AppCompatActivity {
             priceText.setText("");
             editButton.setText("추가");
             indexText.setEnabled(true);
-            indexText.setText(cactusListViewAdapter.getCount() + "");
+            indexText.setText(sqlite.GetMaxUid() + "");
         }
         ReadCacutsListDB();
     }
@@ -179,7 +179,7 @@ public class EditActivity extends AppCompatActivity {
         }
         sqlite.Delete(Integer.parseInt(indexText.getText().toString()));
         ReadCacutsListDB();
-        indexText.setText(cactusListViewAdapter.getCount() + "");
+        indexText.setText(sqlite.GetMaxUid() + "");
         titleText.setText("");
         priceText.setText("");
         indexText.setEnabled(true);
