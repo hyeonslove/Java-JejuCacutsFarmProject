@@ -37,6 +37,8 @@ import Adapter.CactusListViewAdapter;
 import BluetoothService.BluetoothService;
 import Entity.BasketForm;
 import Entity.CactusForm;
+import SQLite.SQLiteControl;
+import SQLite.SQLiteHelper;
 
 public class MainActivity extends AppCompatActivity {
     public static Context mContext;
@@ -83,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
     private Toast toast;
 
     private Ini ini;
+
+    /////////////////////////////////////////////////
+    //                 SQLite 구현                 //
+    /////////////////////////////////////////////////
+    private SQLiteHelper helper;
+    private SQLiteControl sqlite;
+    /////////////////////////////////////////////////
     //endregion
 
     //region General Func
@@ -129,6 +138,15 @@ public class MainActivity extends AppCompatActivity {
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //endregion
+
+    private void ReadCacutsListDB() {
+        cactusListViewAdapter.clear();
+        ArrayList<CactusForm> temp = (ArrayList<CactusForm>) sqlite.GetData("SELECT * FROM CACTUSLIST ORDER BY cactus_uid;");
+        for (CactusForm item : temp) {
+            cactusListViewAdapter.append(item.getIndex(), item.getTitle(), item.getPrice());
+        }
+        cactusListViewAdapter.notifyDataSetChanged();
+    }
 
     //region Init
     // CounterText와 CounterListView를 한번에 처리해주는 Init
@@ -177,20 +195,12 @@ public class MainActivity extends AppCompatActivity {
         cactusListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Object vo = adapterView.getAdapter().getItem(i);  //리스트뷰의 포지션 내용을 가져옴.
-                cactusText.setText(vo.toString().split("    ")[0] + "    " + vo.toString().split("    ")[1]);
+                CactusForm vo = (CactusForm)adapterView.getAdapter().getItem(i);  //리스트뷰의 포지션 내용을 가져옴.
+                cactusText.setText(vo.getTitle() + "    " + vo.getPrice());
             }
         });
 
-        int max_product = Integer.parseInt(ini.get("ProgramSettings", "MAX_PRODUCT"));
-        for (int i = 0; i < max_product; i++) {
-            String obj = ini.get("CactusList", "Cactus" + i);
-            if (obj != null) {
-                cactusListViewAdapter.append(i, obj.split("\\|\\|")[0], Integer.parseInt(obj.split("\\|\\|")[1]));
-                System.out.println(obj);
-            }
-        }
-        cactusListViewAdapter.notifyDataSetChanged();
+        ReadCacutsListDB();
     }
 
     // BasketListView를 한번에 처리해주는 Init
@@ -261,12 +271,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 가로모드 고정
+        // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 가로모드 고정
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // 상태바 없앰(전체화면)
         setContentView(R.layout.activity_main);
         setPermission();
         mContext = this;
         setTitle("제주농원 for android 연결대기");
+        helper = new SQLiteHelper(MainActivity.this,
+                "data.db",
+                null,
+                1);
+        sqlite = new SQLiteControl(helper);
         InitAll();
 
         startService(new Intent(MainActivity.this, BluetoothService.class));
@@ -284,8 +299,8 @@ public class MainActivity extends AppCompatActivity {
         if (editRecvier != null) {
             unregisterReceiver(editRecvier);
         }
-        moveTaskToBack(true);						// 태스크를 백그라운드로 이동
-        finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+        moveTaskToBack(true);                        // 태스크를 백그라운드로 이동
+        finishAndRemoveTask();                        // 액티비티 종료 + 태스크 리스트에서 지우기
         android.os.Process.killProcess(android.os.Process.myPid());
 //        ActivityCompat.finishAffinity(this);
 //        System.exit(0);

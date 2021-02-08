@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import Adapter.BasketListViewAdapter;
 import Entity.BasketForm;
@@ -44,13 +45,15 @@ public class PrintActivity extends AppCompatActivity {
     private Button checkButton;
     private ListView basketListView;
     private BasketListViewAdapter basketListViewAdapter;
+    private BasketListViewAdapter temp_BaksetListViewAdapter;
+
     //endregion
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 가로모드 고정
+        // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 가로모드 고정
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // 상태바 없앰(전체화면)
         setContentView(R.layout.activity_print);
         LocalDateTime now = LocalDateTime.now();
@@ -62,6 +65,8 @@ public class PrintActivity extends AppCompatActivity {
         checkButton.setEnabled((boolean) getIntent().getBooleanExtra("bluetooth_connected", false));
 
         basketListViewAdapter = (BasketListViewAdapter) getIntent().getSerializableExtra("list");
+        temp_BaksetListViewAdapter = (BasketListViewAdapter) basketListViewAdapter.clone();
+        temp_BaksetListViewAdapter.list = new ArrayList<>(temp_BaksetListViewAdapter.getList());
         basketListViewAdapter.layout = R.layout.control_printlistview; // 이렇게 public으로 get;set; 안쓰고 해도 되는지 모르겠음.
         basketListView = findViewById(R.id.basketListView);
         basketListView.setAdapter(basketListViewAdapter);
@@ -89,8 +94,8 @@ public class PrintActivity extends AppCompatActivity {
     public void checkButton_onClick(View view) {
         try {
             String send_msg = "";
-            for (BasketForm item : basketListViewAdapter.getList()) {
-                send_msg = (item.getTitle() + " " + item.getCount() + " " + item.getPrice() + "\\");
+            for (BasketForm item : temp_BaksetListViewAdapter.getList()) {
+                send_msg += (item.getTitle() + " " + item.getCount() + " " + item.getPrice() + "\\");
             }
             BluetoothService.sendData(send_msg + "\r\n");
             toastSend("인쇄 요청에 성공하였습니다.", 2f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);

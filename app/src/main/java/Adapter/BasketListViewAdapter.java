@@ -18,12 +18,23 @@ import java.util.ArrayList;
 
 import Entity.BasketForm;
 
-public class BasketListViewAdapter extends BaseAdapter implements Serializable{
-    private ArrayList<BasketForm> list;
+public class BasketListViewAdapter extends BaseAdapter implements Serializable, Cloneable{
+    public ArrayList<BasketForm> list;
     public int layout = R.layout.control_basketlistview;
 
     public BasketListViewAdapter() {
         list = new ArrayList<>();
+    }
+
+
+    public Object clone() {
+        BasketListViewAdapter vo = null;
+        try {
+            vo = (BasketListViewAdapter) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return vo;
     }
 
     @Override

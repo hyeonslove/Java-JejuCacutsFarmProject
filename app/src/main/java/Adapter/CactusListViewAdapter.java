@@ -54,7 +54,7 @@ public class CactusListViewAdapter extends BaseAdapter implements Serializable{
 
     @Override
     public Object getItem(int i) {
-        return list.get(i).getTitle() + "    " + list.get(i).getPrice() + "    " + list.get(i).getIndex();
+        return new CactusForm(list.get(i).getIndex(), list.get(i).getTitle(),list.get(i).getPrice());
     }
 
     @Override

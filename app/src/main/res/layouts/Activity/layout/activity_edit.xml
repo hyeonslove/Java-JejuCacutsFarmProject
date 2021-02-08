@@ -142,20 +142,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:layout_weight="14"
+            android:layout_weight="20"
             android:autoSizeTextType="uniform"
             android:onClick="checkEditButton_onClick"
             android:text="확인" />
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="6"
-
-            android:autoSizeTextType="uniform"
-            android:onClick="cancelEditButton_onClick"
-            android:text="취소" />
     </LinearLayout>
 
 </LinearLayout>
