@@ -70,6 +70,7 @@
                     android:singleLine="false"
                     android:inputType="text"
                     android:scrollHorizontally="false"
+                    android:nextFocusDown="@+id/EditPriceText"
                     android:hint="제품 이름"
                     android:layout_weight="10"/>
                 <LinearLayout
@@ -83,6 +84,7 @@
                         android:layout_height="match_parent"
                         android:textSize="25sp"
                         android:hint="단가"
+                        android:nextFocusDown="@+id/EditIndexText"
                         android:inputType="number"
                         android:layout_weight="12"/>
 
