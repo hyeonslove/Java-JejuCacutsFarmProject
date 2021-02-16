@@ -85,6 +85,7 @@ public class EditActivity extends AppCompatActivity {
 
         cactusListViewAdapter.notifyDataSetChanged();
         indexText.setText(sqlite.GetMaxUid() + "");
+        cactusListView.requestFocusFromTouch();
     }
 
     private void init() {
@@ -110,6 +111,16 @@ public class EditActivity extends AppCompatActivity {
             cactusListViewAdapter.append(item.getIndex(), item.getTitle(), item.getPrice());
         }
         cactusListViewAdapter.notifyDataSetChanged();
+    }
+
+    private void ReadCacutsListDB(int idx) {
+        cactusListViewAdapter.clear();
+        ArrayList<CactusForm> temp = (ArrayList<CactusForm>) sqlite.GetData("SELECT * FROM CACTUSLIST ORDER BY cactus_uid;");
+        for (CactusForm item : temp) {
+            cactusListViewAdapter.append(item.getIndex(), item.getTitle(), item.getPrice());
+        }
+        cactusListViewAdapter.notifyDataSetChanged();
+        cactusListView.setSelection(idx);
     }
 
     public void toastSend(String text, float textsize, int showtime, int postition, int offsetX, int offsetY) {
@@ -148,10 +159,10 @@ public class EditActivity extends AppCompatActivity {
             toastSend("입력이 잘못되었습니다.", 1.5f, Toast.LENGTH_SHORT, Gravity.TOP, 0, 40);
             return;
         }
+        int temp_idx = Integer.parseInt(indexText.getText().toString());
+
         if (editButton.getText().equals("추가")) {
             sqlite.Insert(new CactusForm(Integer.parseInt(indexText.getText().toString()), titleText.getText().toString(), Integer.parseInt(priceText.getText().toString())));
-
-
             titleText.setText("");
             priceText.setText("");
             indexText.setText(sqlite.GetMaxUid() + "");
@@ -164,7 +175,7 @@ public class EditActivity extends AppCompatActivity {
             indexText.setEnabled(true);
             indexText.setText(sqlite.GetMaxUid() + "");
         }
-        ReadCacutsListDB();
+        ReadCacutsListDB(temp_idx);
     }
 
     public void deleteButton_onClick(View view) {
@@ -184,6 +195,12 @@ public class EditActivity extends AppCompatActivity {
         priceText.setText("");
         indexText.setEnabled(true);
         editButton.setText("추가");
+    }
+
+    public void developButton_onClick(View view){
+        sqlite.ExecuteSQL("DELETE FROM CACTUSLIST");
+        sqlite.ExecuteSQL("INSERT INTO CACTUSLIST(cactus_uid, cactus_name, cactus_price) VALUES (0, '설황(중)',40000),(1, '설황',44000),(2, '성성환',44000),(3, '설황2',30000),(4, '설황(대)',36000),(5, '성성환',35000),(6, '성성환1',40000),(7, '성성환2',42000),(8, '성성환3',45000),(9, '금황환',44000),(10, '금황환1',42000),(11, '성성환',44000),(12, '레오',40000),(13, '레오1',42000),(14, '오공',40000),(15, '오공1',44000),(16, '신천지',40000),(17, '용심목6',50000),(18, '용심목1',70000),(19, '용심목8',100000),(20, '설황(소)',35000),(21, '금호',40000),(22, '구름세',42000),(23, '구름세1',15000),(24, '구름세2',25000),(25, '소정1',44000),(26, '레오2',60000),(27, '화은옥',40000),(28, '레프티아',44000),(29, '눈꽃',40000),(30, '레오군',45000),(31, '설황5',24000),(32, '성성환5',44000),(33, '소정5',30000),(34, '용심목철화5',10000),(35, '백단',40000),(36, '소정4',35000),(37, '소정6',70000),(38, '성성환철화4',20000),(39, '백섬',20000),(40, '성성환철화',30000),(41, '눈꽃3',8000),(42, '용심목9',33000),(43, '눈꽃',8000),(44, '눈꽃',10000),(45, '백섬',30000),(46, '홍기린',33000);");
+        ReadCacutsListDB();
     }
 
     public void checkEditButton_onClick(View view) {
