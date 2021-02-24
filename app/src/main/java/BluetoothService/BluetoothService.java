@@ -154,8 +154,8 @@ public class BluetoothService extends Service {
             if (bluetoothAdapter.isEnabled()) { // 블루투스가 활성화 상태 (기기에 블루투스가 켜져있음)
                 //selectBluetoothDevice(); // 블루투스 디바이스 선택 함수 호출
                 devices = bluetoothAdapter.getBondedDevices();
-                //connectDevice("DESKTOP-5DDDEKH");
-                connectDevice("DESKTOP-AIQ4EHO");
+                connectDevice("DESKTOP-N1LD6KM"); // 아버지 농장 노트북
+                //connectDevice("DESKTOP-AIQ4EHO"); // 내 작업 노트북
             } else { // 블루투스가 비 활성화 상태 (기기에 블루투스가 꺼져있음)
 
                 return;
